@@ -30,5 +30,8 @@
     "styled-components": "^2.2.3",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
+  },
+  "dependencies": {
+    "moment-range": "^3.0.3"
   }
 }

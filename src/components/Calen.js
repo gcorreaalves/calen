@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 
-import DaysContainer from './DaysContainer';
+import Calendar from './Calendar';
 import CalendarNavigator from './CalendarNavigator';
 
 class Calen extends PureComponent {
@@ -12,42 +12,44 @@ class Calen extends PureComponent {
                 from: moment('2017-11-20'),
                 to: moment('2017-11-26'),
             },
-            days: [{
-                date: '2017-11-20',
-                events: [],
-                tasks: [],
-            }, {
-                date: '2017-11-21',
-                events: [],
-                tasks: [],
-            }, {
-                date: '2017-11-22',
-                events: [{
-                    id: 1,
-                    name: '12 Services',
-                }],
-                tasks: [],
-                active: true,
-            }, {
-                date: '2017-11-23',
-                events: [],
-                tasks: [],
-            }, {
-                date: '2017-11-24',
-                events: [],
-                tasks: [],
-            }, {
-                date: '2017-11-25',
-                events: [],
-                tasks: [],
-            }, {
-                date: '2017-11-26',
-                events: [],
-                tasks: [],
-            }],
+            data: {
+                '2017-11-20': {
+                    events: [],
+                    tasks: [],
+                },
+                '2017-11-21': {
+                    events: [],
+                    tasks: [],
+                },
+                '2017-11-22': {
+                    events: [{
+                        id: 1,
+                        name: '12 Services',
+                    }],
+                    tasks: [],
+                    active: true,
+                },
+                '2017-11-23': {
+                    events: [],
+                    tasks: [],
+                },
+                '2017-11-24': {
+                    events: [],
+                    tasks: [],
+                },
+                '2017-11-25': {
+                    events: [],
+                    tasks: [],
+                },
+                '2017-11-26': {
+                    events: [],
+                    tasks: [],
+                },
+            },
             daysQuantity: 7,
         };
         this.setDaysQuantity = this.setDaysQuantity.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
         this.handlePeriodChange = this.handlePeriodChange.bind(this);
     }
 
@@ -83,19 +85,36 @@ class Calen extends PureComponent {
         }
     }
 
-    takeDaysQuantity() {
-        const { days, period, daysQuantity } = this.state;
-        const position = days.findIndex(day => day.date === period.from.format('YYYY-MM-DD'));
-        const limit = position + daysQuantity;
-        return days.slice(position, limit);
+    resetActiveDay() {
+        const data = this.state.data;
+        return Object.keys(data).reduce((obj, date) => {
+            data[date].active = false;
+            obj[date] = data[date];
+            return obj;
+        }, {});
+    }
+
+    setActiveDay(day) {
+        const data = this.resetActiveDay();
+        const date = day.date;
+        if (!data.hasOwnProperty(day.date)) {
+            data[date] = { events: [], actions: [] };
+        }
+        data[date].active = true;
+        this.setState({ data });
+    }
+
+    handleDayClick(day) {
+        this.setActiveDay(day);
     }
 
     handlePeriodChange(period) {
+        const date = period.from.format('YYYY-MM-DD');
+        this.setActiveDay({ date });
         this.setState({ period });
     }
 
     render() {
-        const days = this.takeDaysQuantity();
         return (
             <div>
                 <CalendarNavigator
@@ -103,7 +122,11 @@ class Calen extends PureComponent {
                     daysQuantity={this.state.daysQuantity}
                     onPeriodChange={this.handlePeriodChange}
                 />
-                <DaysContainer days={days} />
+                <Calendar
+                    period={this.state.period}
+                    data={this.state.data}
+                    onDayClick={this.handleDayClick}
+                />
             </div>
         );
     }

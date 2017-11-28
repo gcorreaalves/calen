@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import { HUMAN_DATE_FORMAT } from './constants';
@@ -70,6 +71,21 @@ class CalendarNavigator extends PureComponent {
             </CalendarNavigatorStyled>
         );
     }
+}
+
+CalendarNavigator.propTypes = {
+    period: PropTypes.shape({
+        from: PropTypes.oneOfType([
+            PropTypes.instanceOf(Date),
+            PropTypes.instanceOf(moment),
+        ]),
+        to: PropTypes.oneOfType([
+            PropTypes.instanceOf(Date),
+            PropTypes.instanceOf(moment),
+        ]),
+    }).isRequired,
+    daysQuantity: PropTypes.number.isRequired,
+    onPeriodChange: PropTypes.func.isRequired,
 }
 
 export default CalendarNavigator;

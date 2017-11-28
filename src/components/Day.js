@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import moment from 'moment';
 
@@ -59,5 +60,11 @@ const Day = ({ date, events, actions, active }) => {
     </DayStyled>
   );
 };
+
+Day.propTypes = {
+  date: PropTypes.string.isRequired,
+  events: PropTypes.array.isRequired,
+  active: PropTypes.bool,
+}
 
 export default Day;

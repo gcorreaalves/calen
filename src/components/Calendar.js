@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import momentjs from 'moment';
 import { extendMoment } from 'moment-range';
@@ -50,7 +51,7 @@ class Calendar extends PureComponent {
                         <li
                             className="calen-list-item"
                             key={day.date}
-                            onClick={() => this.props.onDayClick(day)}
+                            onClick={() => this.props.onDayClick(day.date)}
                         >
                             <Day {...day} />
                         </li>
@@ -59,6 +60,21 @@ class Calendar extends PureComponent {
             </CalendarStyled>
         );
     }
+}
+
+Calendar.propTypes = {
+    period: PropTypes.shape({
+        from: PropTypes.oneOfType([
+            PropTypes.instanceOf(Date),
+            PropTypes.instanceOf(moment),
+        ]),
+        to: PropTypes.oneOfType([
+            PropTypes.instanceOf(Date),
+            PropTypes.instanceOf(moment),
+        ]),
+    }).isRequired,
+    data: PropTypes.object.isRequired,
+    onDayClick: PropTypes.func.isRequired,
 }
 
 export default Calendar;

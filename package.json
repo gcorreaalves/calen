@@ -6,7 +6,10 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "NODE_ENV=development webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "eslint": "^4.11.0",
     "eslint-loader": "^1.9.0",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^21.2.1",
     "moment": "^2.19.2",
     "normalize.css": "^7.0.0",
     "postcss-loader": "^2.0.9",

@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
-
+import momentjs from 'moment';
+import { extendMoment } from 'moment-range';
+import { DEFAULT_DATE_FORMAT } from './constants';
 import Calendar from './Calendar';
 import CalendarNavigator from './CalendarNavigator';
+
+const moment = extendMoment(momentjs);
 
 class Calen extends PureComponent {
     constructor(props) {
@@ -54,14 +57,19 @@ class Calen extends PureComponent {
     }
 
     componentDidMount() {
-        this.setDaysQuantity();
+        this.startCalendar();
     }
 
     componentWillUnmount() {
         // TODO: remove event listener
     }
 
+    startCalendar() {
+        this.setDaysQuantity();
+    }
+
     setDaysQuantity() {
+        let daysQuantity = 7;
         const sm = window.matchMedia("(min-width: 576px)");
         const md = window.matchMedia("(min-width: 768px)");
         const lg = window.matchMedia("(min-width: 992px)");
@@ -73,25 +81,41 @@ class Calen extends PureComponent {
         sm.addListener(this.setDaysQuantity);
 
         if (xl.matches) {
-            this.setState({ daysQuantity: 7 });
+            daysQuantity = 7;
         } else if (lg.matches) {
-            this.setState({ daysQuantity: 5 });
+            daysQuantity = 5;
         } else if (md.matches) {
-            this.setState({ daysQuantity: 4 });
+            daysQuantity = 4;
         } else if (sm.matches) {
-            this.setState({ daysQuantity: 2 });
+            daysQuantity = 2;
         } else {
-            this.setState({ daysQuantity: 1 });
+            daysQuantity = 1;
         }
+
+        this.setState({ daysQuantity });
+
+        const period = {
+            from: moment().startOf('week'),
+            to: moment().startOf('week').add(daysQuantity - 1, 'days')
+        };
+
+        if (daysQuantity < 7) {
+            period.from = moment();
+            period.to = moment().add(daysQuantity - 1, 'days');
+        }
+
+        this.handlePeriodChange(period);
+        this.setActiveDay({ date: moment().format(DEFAULT_DATE_FORMAT) })
     }
 
     resetActiveDay() {
         const data = this.state.data;
-        return Object.keys(data).reduce((obj, date) => {
-            data[date].active = false;
-            obj[date] = data[date];
-            return obj;
-        }, {});
+        return Object.keys(data)
+            .reduce((obj, date) => {
+                data[date].active = false;
+                obj[date] = data[date];
+                return obj;
+            }, {});
     }
 
     setActiveDay(day) {
@@ -109,7 +133,12 @@ class Calen extends PureComponent {
     }
 
     handlePeriodChange(period) {
-        const date = period.from.format('YYYY-MM-DD');
+        const today = moment();
+        const range = moment.range(period.from, period.to);
+        let date = period.from.format(DEFAULT_DATE_FORMAT);
+        if (range.contains(today)) {
+            date = today.format(DEFAULT_DATE_FORMAT);
+        }
         this.setActiveDay({ date });
         this.setState({ period });
     }

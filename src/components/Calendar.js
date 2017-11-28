@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import momentjs from 'moment';
 import { extendMoment } from 'moment-range';
+import { DEFAULT_DATE_FORMAT } from './constants';
 import Day from './Day';
 
 const moment = extendMoment(momentjs);
@@ -31,7 +32,7 @@ class Calendar extends PureComponent {
                 actions: [],
                 active: false,
             };
-            const date = day.format('YYYY-MM-DD');
+            const date = day.format(DEFAULT_DATE_FORMAT);
             if(data.hasOwnProperty(date)) {
                 obj = data[date];
             };

@@ -26,7 +26,6 @@ class Calen extends PureComponent {
         if(!this.props.daysQuantity) {
             this.handleWindowResize();
         }
-        this.setDaysQuantity(this.state.daysQuantity);
         this.setActiveDay(moment().format(DEFAULT_DATE_FORMAT));
     }
 
@@ -45,6 +44,11 @@ class Calen extends PureComponent {
         if (quantity < 7) {
             period.from = moment();
             period.to = moment().add(quantity - 1, 'days');
+        }
+
+        const onDaysQuantityChange = this.props.onDaysQuantityChange;
+        if (onDaysQuantityChange) {
+            onDaysQuantityChange(quantity);
         }
 
         this.handlePeriodChange(period);
@@ -112,6 +116,11 @@ class Calen extends PureComponent {
         }
         this.setActiveDay(date);
         this.setState({ period });
+
+        const onPeriodChange = this.props.onPeriodChange;
+        if (onPeriodChange) {
+            onPeriodChange(period);
+        }
     }
 
     render() {

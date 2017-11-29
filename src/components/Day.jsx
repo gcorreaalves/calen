@@ -4,18 +4,20 @@ import styled, { css } from 'styled-components';
 import moment from 'moment';
 
 const DayStyled = styled.div`
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: transparent;
+  color: #585858;
   border: 1px solid #ccc;
   list-style: none;
   padding: 10px;
   width: 100%;
   .day-header {
-    margin-bottom: 10px;
+    text-align: right;
     .day-week-name {
-      float:left;
+      font-size: 0.8em;
     }
     .day-date {
-      float:right;
+      font-size: 1.2em;
     }
   }
   .day-header::after {
@@ -23,19 +25,25 @@ const DayStyled = styled.div`
     clear: both;
     display: block;
   }
-  ul {
-    margin:0;
-    padding:0;
+  .day-event {
+    // display: flex;
+    min-height: 70px;
+    width: 100%;
+
   }
-  li {
-    list-style: none;
+  .day-event-list {
+    display: block;
+    flex: 1;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   ${props => props.today && css`
-    background: tomato;
-    color: white;
+    border-bottom: 1px solid tomato;
   `}
   ${props => props.active && css`
-    background: white;
+    background: #eee;
     color: palevioletred;
   `}
 `;
@@ -45,17 +53,15 @@ const Day = ({ date, events, active }) => {
   return (
     <DayStyled className="day" today={isToday} active={active}>
       <div className="day-header">
-        <div className="day-week-name">
-          { moment(date).format('dddd') }
-        </div>
         <div className="day-date">
-          { moment(date).format('DD-MM') }
+          {moment(date).format('MMM Do')}
+        </div>
+        <div className="day-week-name">
+          {moment(date).format('dddd')}
         </div>
       </div>
-      <div>
-        <ul className="day-event-list">
-          {events.map(event => <li key={event.id}>{event.name}</li>)}
-        </ul>
+      <div className="day-event">
+        {events.map(event => <div className="day-event-list" key={event.id}>{event.name}</div>)}
       </div>
     </DayStyled>
   );

@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import momentjs from 'moment';
 import { extendMoment } from 'moment-range';
-import { DEFAULT_DATE_FORMAT } from './constants';
 import Day from './Day';
 
 const moment = extendMoment(momentjs);
@@ -26,7 +24,7 @@ const CalendarStyled = styled.div`
 class Calendar extends PureComponent {
   buildCalendar() {
     const { from, to } = this.props.period;
-    const { data } = this.props;
+    const data = this.props.data;
     const range = moment.range(from, to);
     const days = Array.from(range.by('day'));
     return days.map((day) => {
@@ -35,7 +33,7 @@ class Calendar extends PureComponent {
         actions: [],
         active: false,
       };
-      const date = day.format(DEFAULT_DATE_FORMAT);
+      const date = day.format('YYYY-MM-DD');
       if (data.hasOwnProperty(date)) {
         obj = data[date];
       }
@@ -53,7 +51,7 @@ class Calendar extends PureComponent {
             <li
               className="calen-list-item"
               key={day.date}
-              onClick={() => this.props.onDayClick(day.date)}
+              onClick={() => this.props.onDayClick(day)}
             >
               <Day {...day} />
             </li>
@@ -63,20 +61,5 @@ class Calendar extends PureComponent {
     );
   }
 }
-
-Calendar.propTypes = {
-  period: PropTypes.shape({
-    from: PropTypes.oneOfType([
-      PropTypes.instanceOf(Date),
-      PropTypes.instanceOf(moment),
-    ]),
-    to: PropTypes.oneOfType([
-      PropTypes.instanceOf(Date),
-      PropTypes.instanceOf(moment),
-    ]),
-  }).isRequired,
-  data: PropTypes.object.isRequired,
-  onDayClick: PropTypes.func.isRequired,
-};
 
 export default Calendar;

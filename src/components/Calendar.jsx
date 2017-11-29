@@ -13,6 +13,8 @@ const CalendarStyled = styled.div`
     flex-wrap: wrap;
     list-style:none;
     width: 100%;
+    padding: 10px 0 0 0;
+    margin: 0;
   }
   li.calen-list-item {
     margin: 4px;

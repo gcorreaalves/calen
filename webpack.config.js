@@ -37,7 +37,7 @@ module.exports = {
     path: path.resolve(BUILD_DIR),
     filename: 'index.js',
     library: 'Calen',
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'umd',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],

@@ -8,19 +8,24 @@ import Day from './Day';
 
 const moment = extendMoment(momentjs);
 const CalendarStyled = styled.div`
-    margin: 10px;
-    ul.calen-list {
-        display: flex;
-        flex-wrap: wrap;
-        list-style:none;
-        width: 100%;
+  ul.calen-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style:none;
+    width: 100%;
+  }
+  li.calen-list-item {
+    margin: 4px;
+    flex: 1;
+    display:flex;
+    width:100%;
+    :first-child {
+      margin-left: 0;
     }
-    li.calen-list-item {
-        margin: 4px;
-        flex: 1;
-        display:flex;
-        width:100%;
+    :last-child {
+        margin-right: 0;
     }
+  }
 `;
 
 class Calendar extends PureComponent {

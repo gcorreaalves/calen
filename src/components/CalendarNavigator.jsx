@@ -5,20 +5,18 @@ import styled from 'styled-components';
 import { HUMAN_DATE_FORMAT } from './constants';
 
 const CalendarNavigatorStyled = styled.div`
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    float: right;
-    margin: 10px;
-    padding: 2px;
-    button {
-        outline: none;
-        background: transparent;
-        height: 40px;
-        margin: 0 2px;
-        width: 40px;
-    }
-    button:active, button:focus {
-        border-color: #585858;
-    }
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  float: right;
+  button {
+    outline: none;
+    background: transparent;
+    height: 40px;
+    margin: 0 2px;
+    width: 40px;
+  }
+  button:active, button:focus {
+    border-color: #585858;
+  }
 `;
 
 class CalendarNavigator extends PureComponent {
@@ -66,7 +64,7 @@ class CalendarNavigator extends PureComponent {
     return (
       <CalendarNavigatorStyled>
         <div className="calendar-navigator">
-          {this.formatPeriodString()}
+          <span className="calendar-navigation__date-range">{this.formatPeriodString()}</span>
           <button className="calendar-navigation__button" onClick={this.prev}>
             <svg width="8px" height="10px" viewBox="0 0 50 80">
               <polyline fill="none" stroke="#000" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 " />

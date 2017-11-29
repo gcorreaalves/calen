@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import moment from 'moment';
 
@@ -45,7 +46,7 @@ const DayStyled = styled.div`
   `}
 `;
 
-const Day = ({ date, events, actions, active }) => {
+const Day = ({ date, events, active }) => {
   const isToday = moment(date).isSame(new Date(), 'd');
   return (
     <DayStyled className="day" today={isToday} active={active}>
@@ -62,6 +63,12 @@ const Day = ({ date, events, actions, active }) => {
       </div>
     </DayStyled>
   );
+};
+
+Day.propTypes = {
+  date: PropTypes.string.isRequired,
+  events: PropTypes.array.isRequired,
+  active: PropTypes.bool,
 };
 
 export default Day;

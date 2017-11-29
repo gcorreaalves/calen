@@ -27,12 +27,14 @@ const DayStyled = styled.div`
   }
   .day-event {
     // display: flex;
+    min-height: 70px;
     width: 100%;
+
   }
   .day-event-list {
     display: block;
     flex: 1;
-    margin-top: 2px;
+    margin-top: 3px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

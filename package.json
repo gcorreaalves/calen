@@ -2,11 +2,11 @@
   "name": "calen",
   "version": "1.0.0",
   "description": "",
-  "main": "src/calen.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "npm run dev",
     "dev": "NODE_ENV=development webpack-dev-server",
-    "build": "webpack -p",
+    "build": "NODE_ENV=production webpack -p",
     "lint": "eslint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -31,15 +31,16 @@
     "jest": "^21.2.1",
     "postcss-loader": "^2.0.9",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.1.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "moment": "^2.19.2",
+    "moment-range": "^3.0.3",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "moment": "^2.19.2",
-    "moment-range": "^3.0.3",
     "styled-components": "^2.2.3"
   }
 }

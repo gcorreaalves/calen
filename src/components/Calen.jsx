@@ -20,17 +20,29 @@ class Calen extends PureComponent {
     this.resetDaysQuantityOnResize = this.resetDaysQuantityOnResize.bind(this);
     this.handleDayClick = this.handleDayClick.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
+    this.breakPoints = {
+      sm: window.matchMedia('(min-width: 576px)'),
+      md: window.matchMedia('(min-width: 768px)'),
+      lg: window.matchMedia('(min-width: 992px)'),
+      xl: window.matchMedia('(min-width: 1200px)'),
+    };
   }
 
   componentDidMount() {
-    if (!this.props.daysQuantity) {
-      this.handleWindowResize();
-    }
+    this.setUpDaysQuantity(this.props.daysQuantity);
     this.setActiveDay(moment().format(DEFAULT_DATE_FORMAT));
   }
 
   componentWillUnmount() {
-    // TODO: remove event listener
+    this.removeBreakPointsEvents();
+  }
+
+  setUpDaysQuantity(quantity) {
+    if (!quantity) {
+      this.resetDaysQuantityOnResize();
+    } else {
+      this.setDaysQuantity(quantity);
+    }
   }
 
   setDaysQuantity(quantity) {
@@ -74,10 +86,12 @@ class Calen extends PureComponent {
   }
 
   resetDaysQuantityOnResize() {
-    const sm = window.matchMedia('(min-width: 576px)');
-    const md = window.matchMedia('(min-width: 768px)');
-    const lg = window.matchMedia('(min-width: 992px)');
-    const xl = window.matchMedia('(min-width: 1200px)');
+    const {
+      xl,
+      lg,
+      md,
+      sm,
+    } = this.breakPoints;
 
     xl.addListener(this.resetDaysQuantityOnResize);
     lg.addListener(this.resetDaysQuantityOnResize);
@@ -99,8 +113,11 @@ class Calen extends PureComponent {
     this.setDaysQuantity(quantity);
   }
 
-  handleWindowResize() {
-    this.resetDaysQuantityOnResize();
+  removeBreakPointsEvents() {
+    this.breakPoints.xl.removeListener(this.resetDaysQuantityOnResize);
+    this.breakPoints.lg.removeListener(this.resetDaysQuantityOnResize);
+    this.breakPoints.md.removeListener(this.resetDaysQuantityOnResize);
+    this.breakPoints.sm.removeListener(this.resetDaysQuantityOnResize);
   }
 
   handleDayClick(day) {

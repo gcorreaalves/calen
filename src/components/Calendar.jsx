@@ -27,6 +27,12 @@ const CalendarStyled = styled.div`
     :last-child {
         margin-right: 0;
     }
+    button {
+      background: transparent;
+      border: none;
+      width: 100%;
+      outline: none;
+    }
   }
 `;
 
@@ -60,9 +66,10 @@ class Calendar extends PureComponent {
             <li
               className="calen-list-item"
               key={day.date}
-              onClick={() => this.props.onDayClick(day.date)}
             >
-              <Day {...day} />
+              <button onClick={() => this.props.onDayClick(day.date)}>
+                <Day {...day} />
+              </button>
             </li>
           ))}
         </ul>

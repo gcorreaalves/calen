@@ -9,13 +9,21 @@ const TEMPLATE_HTML = path.resolve(SOURCE_DIR, 'template.html');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 const CONFIG = {
-  entry: 'index.jsx',
-  plugins: [],
+  entry: {
+    index: path.resolve(SOURCE_DIR, 'index.jsx'),
+  },
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  ],
 };
 
 if (IS_PROD) {
   CONFIG.entry = path.join(SOURCE_DIR, 'components', 'Calen.jsx');
   CONFIG.plugins.push(new UglifyJSPlugin());
+  CONFIG.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    children: true,
+    minChunks: Infinity,
+  }));
 } else {
   CONFIG.entry = {
     app: [
@@ -53,11 +61,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: 'babel-loader?cacheDirectory',
-      },
-      {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },

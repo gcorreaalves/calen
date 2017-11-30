@@ -67,6 +67,10 @@ const Day = ({ date, events, active }) => {
   );
 };
 
+Day.defaultProps = {
+  active: false,
+};
+
 Day.propTypes = {
   date: PropTypes.string.isRequired,
   events: PropTypes.array.isRequired,

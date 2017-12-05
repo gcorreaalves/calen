@@ -65,12 +65,12 @@ class CalendarNavigator extends PureComponent {
       <CalendarNavigatorStyled>
         <div className="calendar-navigator">
           <span className="calendar-navigation__date-range">{this.formatPeriodString()}</span>
-          <button className="calendar-navigation__button" onClick={this.prev}>
+          <button className="calendar-navigation__button previous" onClick={this.prev}>
             <svg width="8px" height="10px" viewBox="0 0 50 80">
               <polyline fill="none" stroke="#000" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 " />
             </svg>
           </button>
-          <button className="arrow right" onClick={this.next}>
+          <button className="calendar-navigation__button next" onClick={this.next}>
             <svg width="8px" height="10px" viewBox="0 0 50 80">
               <polyline fill="none" stroke="#000" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 " />
             </svg>

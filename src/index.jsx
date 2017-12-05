@@ -41,6 +41,7 @@ const data = {
 ReactDOM.render(
   <Calen
     data={data}
+    onDayClick={date => console.log(date)}
     onPeriodChange={period => console.log(period)}
     onDaysQuantityChange={quantity => console.log(quantity)}
   />,

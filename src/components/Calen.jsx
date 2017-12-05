@@ -105,6 +105,10 @@ class Calen extends PureComponent {
 
   handleDayClick(day) {
     this.setActiveDay(day);
+    const { onDayClick } = this.props;
+    if (onDayClick) {
+      onDayClick(day);
+    }
   }
 
   handlePeriodChange(period) {
@@ -148,6 +152,7 @@ Calen.defaultProps = {
   },
   data: {},
   daysQuantity: 0,
+  onDayClick: null,
   onPeriodChange: null,
   onDaysQuantityChange: null,
 };
@@ -165,6 +170,7 @@ Calen.propTypes = {
   }),
   data: PropTypes.object,
   daysQuantity: PropTypes.number,
+  onDayClick: PropTypes.func,
   onPeriodChange: PropTypes.func,
   onDaysQuantityChange: PropTypes.func,
 };

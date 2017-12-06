@@ -43,11 +43,7 @@ class Calendar extends PureComponent {
     const range = moment.range(from, to);
     const days = Array.from(range.by('day'));
     return days.map((day) => {
-      let obj = {
-        events: [],
-        actions: [],
-        active: false,
-      };
+      let obj = { events: [] };
       const date = day.format(DEFAULT_DATE_FORMAT);
       if (data.hasOwnProperty(date)) {
         obj = data[date];
@@ -68,7 +64,7 @@ class Calendar extends PureComponent {
               key={day.date}
             >
               <button onClick={() => this.props.onDayClick(day.date)}>
-                <Day {...day} />
+                <Day {...day} active={this.props.day === day.date} />
               </button>
             </li>
           ))}
@@ -89,6 +85,7 @@ Calendar.propTypes = {
       PropTypes.instanceOf(moment),
     ]),
   }).isRequired,
+  day: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
   onDayClick: PropTypes.func.isRequired,
 };

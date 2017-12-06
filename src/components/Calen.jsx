@@ -12,8 +12,8 @@ class Calen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      day: moment().format(DEFAULT_DATE_FORMAT),
       period: this.props.period,
-      data: this.props.data,
       daysQuantity: this.props.daysQuantity || 7,
     };
     this.setDaysQuantity = this.setDaysQuantity.bind(this);
@@ -30,7 +30,6 @@ class Calen extends PureComponent {
 
   componentDidMount() {
     this.setUpDaysQuantity(this.props.daysQuantity);
-    this.setActiveDay(moment().format(DEFAULT_DATE_FORMAT));
   }
 
   componentWillUnmount() {
@@ -50,7 +49,7 @@ class Calen extends PureComponent {
 
     const period = {
       from: moment().startOf('week'),
-      to: moment().startOf('week').add(quantity - 1, 'days')
+      to: moment().startOf('week').add(quantity - 1, 'days'),
     };
 
     if (quantity < 7) {
@@ -67,22 +66,11 @@ class Calen extends PureComponent {
   }
 
   setActiveDay(day) {
-    const data = this.resetActiveDay();
-    if (!data.hasOwnProperty(day)) {
-      data[day] = { events: [], actions: [] };
+    this.setState({ day });
+    const { onDayChange } = this.props;
+    if (onDayChange) {
+      onDayChange(day);
     }
-    data[day].active = true;
-    this.setState({ data });
-  }
-
-  resetActiveDay() {
-    const { data } = this.state;
-    return Object.keys(data)
-      .reduce((obj, date) => {
-        data[date].active = false;
-        obj[date] = data[date];
-        return obj;
-      }, {});
   }
 
   resetDaysQuantityOnResize() {
@@ -122,10 +110,6 @@ class Calen extends PureComponent {
 
   handleDayClick(day) {
     this.setActiveDay(day);
-    const { onDayClick } = this.props;
-    if (onDayClick) {
-      onDayClick(day);
-    }
   }
 
   handlePeriodChange(period) {
@@ -154,7 +138,8 @@ class Calen extends PureComponent {
         />
         <Calendar
           period={this.state.period}
-          data={this.state.data}
+          day={this.state.day}
+          data={this.props.data}
           onDayClick={this.handleDayClick}
         />
       </div>
@@ -169,7 +154,7 @@ Calen.defaultProps = {
   },
   data: {},
   daysQuantity: 0,
-  onDayClick: null,
+  onDayChange: null,
   onPeriodChange: null,
   onDaysQuantityChange: null,
 };
@@ -187,7 +172,7 @@ Calen.propTypes = {
   }),
   data: PropTypes.object,
   daysQuantity: PropTypes.number,
-  onDayClick: PropTypes.func,
+  onDayChange: PropTypes.func,
   onPeriodChange: PropTypes.func,
   onDaysQuantityChange: PropTypes.func,
 };

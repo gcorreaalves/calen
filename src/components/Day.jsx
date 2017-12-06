@@ -50,8 +50,15 @@ const DayStyled = styled.div`
 
 const Day = ({ date, events, active }) => {
   const isToday = moment(date).isSame(new Date(), 'd');
+  let dayClass = 'day';
+  if (active) {
+    dayClass += ' active';
+  }
+  if (isToday) {
+    dayClass += ' today';
+  }
   return (
-    <DayStyled className="day" today={isToday} active={active}>
+    <DayStyled className={dayClass} today={isToday} dayClass active={active}>
       <div className="day-header">
         <div className="day-date">
           {moment(date).format('MMM Do')}

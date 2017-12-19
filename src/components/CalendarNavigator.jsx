@@ -22,6 +22,9 @@ const CalendarNavigatorStyled = styled.div`
     border-color: #000;
     background: #fcfcfc;
   }
+  .calendar-navigation__date-range {
+    text-transform: capitalize
+  }
 `;
 
 class CalendarNavigator extends PureComponent {

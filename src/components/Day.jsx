@@ -19,6 +19,7 @@ const DayStyled = styled.div`
     }
     .day-date {
       font-size: 1.2em;
+      text-transform: capitalize;
     }
   }
   .day-header::after {
@@ -55,13 +56,14 @@ const DayStyled = styled.div`
 const Day = ({ date, events, active }) => {
   const isToday = moment(date).isSame(new Date(), 'd');
   let dayClass = 'day';
-  let formatWeekDay = 'dddd';
+  let formatWeekDay = moment(date).format('dddd');
   if (active) {
     dayClass += ' active';
   }
   if (isToday) {
     dayClass += ' today';
-    formatWeekDay = '[Today]';
+    formatWeekDay = moment().calendar(null).split(' ');
+    formatWeekDay = formatWeekDay[0];
   }
   return (
     <DayStyled className={dayClass} today={isToday} dayClass active={active}>
@@ -70,7 +72,7 @@ const Day = ({ date, events, active }) => {
           {moment(date).format('MMM DD')}
         </div>
         <div className="day-week-name">
-          {moment(date).format(formatWeekDay)}
+          {formatWeekDay}
         </div>
       </div>
       <div className="day-event">

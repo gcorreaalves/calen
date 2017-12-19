@@ -29,6 +29,11 @@ class Calen extends PureComponent {
   }
 
   componentDidMount() {
+    try {
+      require(`moment/locale/${this.props.locale}`);
+    } catch (e) {
+      //console.log(e);
+    }
     this.setUpDaysQuantity(this.props.daysQuantity);
   }
 
@@ -148,6 +153,7 @@ class Calen extends PureComponent {
 }
 
 Calen.defaultProps = {
+  locale: null,
   period: {
     from: moment().startOf('week'),
     to: moment().startOf('week').add(6, 'days'),
@@ -160,6 +166,7 @@ Calen.defaultProps = {
 };
 
 Calen.propTypes = {
+  locale: PropTypes.string,
   period: PropTypes.shape({
     from: PropTypes.oneOfType([
       PropTypes.instanceOf(Date),

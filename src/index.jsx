@@ -17,6 +17,7 @@ const data = {
 
 ReactDOM.render(
   <Calen
+    locale="pt"
     data={data}
     onDayChange={date => console.log(date)}
     onPeriodChange={period => console.log(period)}

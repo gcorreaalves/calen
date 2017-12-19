@@ -8,14 +8,19 @@ const CalendarNavigatorStyled = styled.div`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   float: right;
   button {
+    border-color: #585858;
     outline: none;
-    background: transparent;
+    background: #fff;
     height: 40px;
     margin: 0 2px;
     width: 40px;
+    svg {
+      stroke: #585858;
+    }
   }
   button:active, button:focus {
-    border-color: #585858;
+    border-color: #000;
+    background: #fcfcfc;
   }
 `;
 
@@ -69,8 +74,7 @@ class CalendarNavigator extends PureComponent {
             <svg width="8px" height="10px" viewBox="0 0 50 80">
               <polyline
                 fill="none"
-                stroke="#000"
-                strokeWidth="1"
+                strokeWidth="5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 points="45.63,75.8 0.375,38.087 45.63,0.375 "
@@ -81,8 +85,7 @@ class CalendarNavigator extends PureComponent {
             <svg width="8px" height="10px" viewBox="0 0 50 80">
               <polyline
                 fill="none"
-                stroke="#000"
-                strokeWidth="1"
+                strokeWidth="5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 points="0.375,0.375 45.63,38.087 0.375,75.8 "

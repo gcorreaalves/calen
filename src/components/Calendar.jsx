@@ -12,9 +12,11 @@ const CalendarStyled = styled.div`
     display: flex;
     flex-wrap: wrap;
     list-style:none;
-    width: 100%;
-    padding: 10px 0 0 0;
     margin: 0;
+    min-height: 180px;
+    padding: 10px 0 0 0;
+    width: 100%;
+
   }
   li.calen-list-item {
     margin: 4px;

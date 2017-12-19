@@ -5,11 +5,12 @@ import moment from 'moment';
 
 const DayStyled = styled.div`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background: transparent;
+  background: #fff;
+  border: 1px solid #585858;
   color: #585858;
-  border: 1px solid #ccc;
   list-style: none;
   padding: 10px;
+  transition: padding 0.3s ease-in-out, background-color 0.3s ease-in-out;
   width: 100%;
   .day-header {
     text-align: right;
@@ -28,6 +29,7 @@ const DayStyled = styled.div`
   .day-event {
     // display: flex;
     min-height: 70px;
+    text-align: left;
     width: 100%;
 
   }
@@ -43,28 +45,32 @@ const DayStyled = styled.div`
     border-bottom: 1px solid tomato;
   `}
   ${props => props.active && css`
-    background: #eee;
-    color: palevioletred;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #585858;
+    color: #fff;
   `}
 `;
 
 const Day = ({ date, events, active }) => {
   const isToday = moment(date).isSame(new Date(), 'd');
   let dayClass = 'day';
+  let formatWeekDay = 'dddd';
   if (active) {
     dayClass += ' active';
   }
   if (isToday) {
     dayClass += ' today';
+    formatWeekDay = '[Today]';
   }
   return (
     <DayStyled className={dayClass} today={isToday} dayClass active={active}>
       <div className="day-header">
         <div className="day-date">
-          {moment(date).format('MMM Do')}
+          {moment(date).format('MMM DD')}
         </div>
         <div className="day-week-name">
-          {moment(date).format('dddd')}
+          {moment(date).format(formatWeekDay)}
         </div>
       </div>
       <div className="day-event">

@@ -48,8 +48,8 @@ class Calen extends PureComponent {
     this.setState({ daysQuantity: quantity });
 
     const period = {
-      from: moment().startOf('week'),
-      to: moment().startOf('week').add(quantity - 1, 'days'),
+      from: moment().startOf('isoweek'),
+      to: moment().startOf('isoweek').add(quantity - 1, 'days'),
     };
 
     if (quantity < 7) {

@@ -12,8 +12,6 @@ class Calen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      day: moment().format(DEFAULT_DATE_FORMAT),
-      period: this.props.period,
       daysQuantity: this.props.daysQuantity || 7,
     };
     this.setDaysQuantity = this.setDaysQuantity.bind(this);
@@ -32,16 +30,35 @@ class Calen extends PureComponent {
     try {
       require(`moment/locale/${this.props.locale}`);
     } catch (e) {
-      //console.log(e);
+      console.log(new Error('Locale not found'));
     }
-    this.setUpDaysQuantity(this.props.daysQuantity);
+    this.setUpDaysQuantity();
   }
 
   componentWillUnmount() {
     this.removeBreakPointsEvents();
   }
 
-  setUpDaysQuantity(quantity) {
+  setPeriod(quantity) {
+    const { date } = this.props;
+    const period = {
+      from: moment().startOf('isoWeek'),
+      to: moment().startOf('isoWeek').add(quantity, 'days'),
+    };
+    if (this.state.period) {
+      const { from } = this.state.period;
+      period.from = from.startOf('isoWeek');
+      period.to = from.clone().startOf('isoWeek').add(quantity, 'days');
+    } else if (date) {
+      period.from = moment(date).startOf('isoWeek');
+      period.to = moment(date).startOf('isoWeek').add(quantity, 'days');
+    }
+    this.setState({ period });
+    this.handlePeriodChange(period);
+  }
+
+  setUpDaysQuantity() {
+    const quantity = this.props.daysQuantity;
     if (!quantity) {
       this.resetDaysQuantityOnResize();
     } else {
@@ -51,23 +68,11 @@ class Calen extends PureComponent {
 
   setDaysQuantity(quantity) {
     this.setState({ daysQuantity: quantity });
-
-    const period = {
-      from: moment().startOf('isoweek'),
-      to: moment().startOf('isoweek').add(quantity - 1, 'days'),
-    };
-
-    if (quantity < 7) {
-      period.from = moment();
-      period.to = moment().add(quantity - 1, 'days');
-    }
-
     const { onDaysQuantityChange } = this.props;
     if (onDaysQuantityChange) {
       onDaysQuantityChange(quantity);
     }
-
-    this.handlePeriodChange(period);
+    this.setPeriod(quantity - 1);
   }
 
   setActiveDay(day) {
@@ -118,22 +123,30 @@ class Calen extends PureComponent {
   }
 
   handlePeriodChange(period) {
+    const day = moment(this.props.date);
     const today = moment();
     const range = moment.range(period.from, period.to);
     let date = period.from.format(DEFAULT_DATE_FORMAT);
     if (range.contains(today)) {
       date = today.format(DEFAULT_DATE_FORMAT);
     }
-    this.setActiveDay(date);
-    this.setState({ period });
 
+    this.setState({ period });
     const { onPeriodChange } = this.props;
     if (onPeriodChange) {
       onPeriodChange(period);
     }
+
+    if (range.contains(moment(day))) {
+      date = moment(day).format(DEFAULT_DATE_FORMAT);
+    }
+    this.setActiveDay(date);
   }
 
   render() {
+    if (!this.state.period) {
+      return null;
+    }
     return (
       <div>
         <CalendarNavigator
@@ -153,11 +166,8 @@ class Calen extends PureComponent {
 }
 
 Calen.defaultProps = {
+  date: moment(),
   locale: null,
-  period: {
-    from: moment().startOf('week'),
-    to: moment().startOf('week').add(6, 'days'),
-  },
   data: {},
   daysQuantity: 0,
   onDayChange: null,
@@ -167,16 +177,11 @@ Calen.defaultProps = {
 
 Calen.propTypes = {
   locale: PropTypes.string,
-  period: PropTypes.shape({
-    from: PropTypes.oneOfType([
-      PropTypes.instanceOf(Date),
-      PropTypes.instanceOf(moment),
-    ]),
-    to: PropTypes.oneOfType([
-      PropTypes.instanceOf(Date),
-      PropTypes.instanceOf(moment),
-    ]),
-  }),
+  date: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date),
+    PropTypes.instanceOf(moment),
+  ]),
   data: PropTypes.object,
   daysQuantity: PropTypes.number,
   onDayChange: PropTypes.func,

@@ -21,6 +21,7 @@ ReactDOM.render(
     date="2018-01-10"
     data={data}
     onDayChange={date => console.log(date)}
+    onDayAddEventClick={date => console.log(date, 'add event')}
     onPeriodChange={period => console.log(period)}
     onDaysQuantityChange={quantity => console.log(quantity)}
   />,

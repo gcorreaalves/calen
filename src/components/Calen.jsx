@@ -17,6 +17,7 @@ class Calen extends PureComponent {
     this.setDaysQuantity = this.setDaysQuantity.bind(this);
     this.resetDaysQuantityOnResize = this.resetDaysQuantityOnResize.bind(this);
     this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleDayAddEventClick = this.handleDayAddEventClick.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.breakPoints = {
       sm: window.matchMedia('(min-width: 576px)'),
@@ -118,6 +119,10 @@ class Calen extends PureComponent {
     this.breakPoints.sm.removeListener(this.resetDaysQuantityOnResize);
   }
 
+  handleDayAddEventClick(day) {
+    this.props.onDayAddEventClick(day);
+  }
+
   handleDayClick(day) {
     this.setActiveDay(day);
   }
@@ -159,6 +164,7 @@ class Calen extends PureComponent {
           day={this.state.day}
           data={this.props.data}
           onDayClick={this.handleDayClick}
+          onDayAddEventClick={this.props.onDayAddEventClick ? this.handleDayAddEventClick : null}
         />
       </div>
     );
@@ -171,6 +177,7 @@ Calen.defaultProps = {
   data: {},
   daysQuantity: 0,
   onDayChange: null,
+  onDayAddEventClick: null,
   onPeriodChange: null,
   onDaysQuantityChange: null,
 };
@@ -185,6 +192,7 @@ Calen.propTypes = {
   data: PropTypes.object,
   daysQuantity: PropTypes.number,
   onDayChange: PropTypes.func,
+  onDayAddEventClick: PropTypes.func,
   onPeriodChange: PropTypes.func,
   onDaysQuantityChange: PropTypes.func,
 };

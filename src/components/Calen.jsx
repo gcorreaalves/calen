@@ -31,7 +31,9 @@ class Calen extends PureComponent {
     try {
       require(`moment/locale/${this.props.locale}`);
     } catch (e) {
-      console.log(new Error('Locale not found'));
+      if (this.props.locale !== 'en') {
+        console.log(new Error('Locale not found'));
+      }
     }
     this.setUpDaysQuantity();
   }

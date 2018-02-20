@@ -95,12 +95,15 @@ class Calendar extends PureComponent {
     const range = moment.range(from, to);
     const days = Array.from(range.by('day'));
     return days.map((day) => {
-      let obj = { events: [] };
       const date = day.format(DEFAULT_DATE_FORMAT);
-      if (data.hasOwnProperty(date)) {
-        obj = data[date];
+      const obj = {
+        events: [],
+        isPast: moment().isAfter(date),
+        date,
+      };
+      if (data[date]) {
+        obj.events = data[date].events;
       }
-      obj.date = date;
       return obj;
     });
   }
@@ -127,10 +130,7 @@ class Calendar extends PureComponent {
       <CalendarStyled>
         <ul className="calen-list">
           {calendar.map(day => (
-            <li
-              className="calen-list-item"
-              key={day.date}
-            >
+            <li className={`calen-list-item ${(day.isPast) ? 'past' : ''}`} key={day.date}>
               <button
                 className="calen-list-item__day"
                 onClick={() => this.props.onDayClick(day.date)}

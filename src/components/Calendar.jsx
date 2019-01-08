@@ -98,7 +98,7 @@ class Calendar extends PureComponent {
       const date = day.format(DEFAULT_DATE_FORMAT);
       const obj = {
         events: [],
-        isPast: moment().isAfter(date),
+        isPast: moment().startOf('day').isAfter(date),
         date,
       };
       if (data[date]) {
